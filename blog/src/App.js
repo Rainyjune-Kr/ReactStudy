@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 
@@ -37,8 +36,20 @@ function App() {
         <h4>{ articleTitle[2] }</h4>
         <p>2월 17일 발행</p>
       </div>
+
+      <Modal/>
     </div>
   );
+}
+
+function Modal() {
+  return(
+    <div className='modal'>
+      <h4>제목</h4>
+      <p>날짜</p>
+      <p>상세내용</p>
+    </div>
+  ); 
 }
 
 export default App;
