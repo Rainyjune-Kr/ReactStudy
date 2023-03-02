@@ -37,18 +37,11 @@ function App() {
         let copy = [...articleTitle].sort();
         setArticleTitle(copy);
       }}>정렬</button>
-
-      {
-        [1,2,3].map(function(){
-          return <div>Hello?</div>
-        })
-        // => [<div>Hello?</div>,<div>Hello?</div>,<div>Hello?</div>]
-      }
       
       {
         articleTitle.map(function(title, arrIdx) {
           return (
-            <div className="list">
+            <div className="list" key={arrIdx}>
               <h4 onClick={() => { switchModal() }}>{ title } <span onClick={() => { updateCntLike(arrIdx, cntLike[arrIdx] + 1) }}>👍</span> {cntLike[arrIdx]} </h4>
               <p>2월 17일 발행</p>
             </div>
