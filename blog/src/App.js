@@ -7,6 +7,15 @@ function App() {
                                                   '파이썬독학']);
   let [cntLike, setCntLike] = useState(0);
 
+  let [modal, setModal] = useState('closed');
+
+  function switchModal() {
+    if (modal == 'opened')
+      setModal('closed');
+    else
+      setModal('opened');
+  }
+  
   return (
     <div className="App">
       <div className="black-nav">
@@ -33,11 +42,13 @@ function App() {
         <p>2월 17일 발행</p>
       </div>
       <div className="list">
-        <h4>{ articleTitle[2] }</h4>
+        <h4 onClick={() => { switchModal() }}>{ articleTitle[2] }</h4>
         <p>2월 17일 발행</p>
       </div>
 
-      <Modal/>
+      {
+        modal == 'opened' ? <Modal/> : null
+      }
     </div>
   );
 }
