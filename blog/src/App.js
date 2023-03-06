@@ -8,6 +8,7 @@ function App() {
   let [cntLike, setCntLike] = useState([0, 0, 0]);
   let [modal, setModal] = useState('closed');
   let [showIdx, setShowIdx] = useState(0);
+  let [inputTagValue, setInputTagValue] = useState('');
 
   function updateCntLike(idx, value) {
     let copy = [...cntLike];
@@ -28,6 +29,20 @@ function App() {
       setModal('opened');
   }
 
+  function insertArticleTitle(idx, value) {
+    let copy = [...articleTitle];
+    let resultArray = [...copy.slice(0, idx), value, ...copy.slice(idx)];
+    setArticleTitle(resultArray);
+  }
+
+  function deleteArticleTitle(idx) {
+    let copy = [...articleTitle];
+    if (idx !== -1) {
+      copy.splice(idx, 1); // remove at
+    }
+    setArticleTitle(copy);
+  }
+
   return (
     <div className="App">
       <div className="black-nav">
@@ -45,12 +60,16 @@ function App() {
         articleTitle.map(function(title, arrIdx) {
           return (
             <div className="list" key={arrIdx}>
-              <h4 onClick={ () => { switchModal(); setShowIdx(arrIdx); } }>{ title } <span onClick={() => { updateCntLike(arrIdx, cntLike[arrIdx] + 1) }}>👍</span> {cntLike[arrIdx]} </h4>
+              <h4 onClick={ () => { switchModal(); setShowIdx(arrIdx); } }>{ title } <span onClick={(e) => { e.stopPropagation(); updateCntLike(arrIdx, cntLike[arrIdx] + 1) }}>👍</span> {cntLike[arrIdx]} </h4>
               <p>2월 17일 발행</p>
+              <button onClick={ () => { deleteArticleTitle(arrIdx) } }>삭제</button>
             </div>
           )
         })
       }
+
+      <input onChange={ (e) => { setInputTagValue(e.target.value); } }/>
+      <button onClick={ () => { insertArticleTitle(0, inputTagValue) } }>글 쓰기</button>
 
       {
         modal === 'opened' ? <Modal articleIdx={showIdx} updateArticleTitle={ () => { updateArticleTitle(0, '여자 코트 추천') } } articleTitle={ articleTitle }/> : null
