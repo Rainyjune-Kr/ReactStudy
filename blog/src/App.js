@@ -14,6 +14,12 @@ function App() {
     setCntLike(copy);
   }
 
+  function updateArticleTitle(idx, value) {
+    let copy = [...articleTitle];
+    copy[idx] = value;
+    setArticleTitle(copy);
+  }
+
   function switchModal() {
     if (modal === 'opened')
       setModal('closed');
@@ -27,11 +33,7 @@ function App() {
         <h4>Rainyjune Blog</h4>
       </div>
 
-      <button onClick={ () => { 
-        let copy = [...articleTitle];
-        copy[0] = '여자 코트 추천';
-        setArticleTitle(copy);
-      } }>글 수정</button>
+      <button onClick={ () => { updateArticleTitle(0, '여자 코트 추천') } }>글 수정</button>
 
       <button onClick={ () => {
         let copy = [...articleTitle].sort();
@@ -42,7 +44,7 @@ function App() {
         articleTitle.map(function(title, arrIdx) {
           return (
             <div className="list" key={arrIdx}>
-              <h4 onClick={() => { switchModal() }}>{ title } <span onClick={() => { updateCntLike(arrIdx, cntLike[arrIdx] + 1) }}>👍</span> {cntLike[arrIdx]} </h4>
+              <h4 onClick={ switchModal }>{ title } <span onClick={() => { updateCntLike(arrIdx, cntLike[arrIdx] + 1) }}>👍</span> {cntLike[arrIdx]} </h4>
               <p>2월 17일 발행</p>
             </div>
           )
@@ -50,18 +52,19 @@ function App() {
       }
 
       {
-        modal === 'opened' ? <Modal/> : null
+        modal === 'opened' ? <Modal updateArticleTitle={ () => { updateArticleTitle(0, '여자 코트 추천') } } articleTitle={ articleTitle }/> : null
       }
     </div>
   );
 }
 
-function Modal() {
+function Modal(props) {
   return(
     <div className='modal'>
-      <h4>제목</h4>
+      <h4>{ props.articleTitle[0] }</h4>
       <p>날짜</p>
       <p>상세내용</p>
+      <button onClick={ props.updateArticleTitle }>글 수정</button>
     </div>
   ); 
 }
