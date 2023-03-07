@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { Component, useState } from 'react';
 
 function App() {
   let [articleTitle, setArticleTitle] = useState(['남자 코트 추천', 
@@ -87,6 +87,24 @@ function Modal(props) {
       <button onClick={ props.updateArticleTitle }>글 수정</button>
     </div>
   ); 
+}
+
+class Modal2 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name : 'bae',
+      age : 32
+    }
+  }
+
+  render() {
+    return (
+      <div>안녕 { this.state.name }
+        <button onClick={() => this.setState({ age : 33 })}>테스트</button>
+      </div>
+    )
+  }
 }
 
 export default App;
