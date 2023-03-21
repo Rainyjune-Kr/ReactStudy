@@ -53,12 +53,7 @@ function App() {
             </Container>
           </>
         } />
-        <Route path='/detail' element={
-          <>
-          <div>상세페이지</div>
-          <DetailPage/>
-          </>
-        }
+        <Route path='/detail/:id' element={ <DetailPage shoes= { goods }/> }
         />
         <Route path='/about' element={ <About/>}>
           <Route path='member' element={ <div>멤버</div> }/>
