@@ -1,9 +1,36 @@
-import { useState } from "react";
+import { Component, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from 'styled-components';
 
+class DetailPage2 extends Component {
+  componentDidMount() {
+    // Mount시 실행되는 코드
+  }
+
+  componentDidUpdate() {
+    // Update시 실행되는 코드
+  }
+
+  componentWillUnmount() {
+    // Unmount시 실행되는 코드
+  }
+}
+
 function DetailPage (props) {
+  useEffect(() => {
+    // Mount/Update시 실행된다.
+    setTimeout(() => {
+      setAlertVisible(false);
+    }, 2000)
+  })
+
+  setTimeout(() => { 
+    // code
+  }, 1000)
+  
+  let [count, setCount] = useState(0);
   let { id } = useParams();
+  let [alertVisible, setAlertVisible] = useState(true);
   
   let shoes = props.shoes.find(x => x.id == id);
 
@@ -25,7 +52,10 @@ function DetailPage (props) {
   else
     return(
     <div className="container">
-      <YellowBtn bg ="blue">버튼</YellowBtn>
+      {
+        alertVisible === true ? <div className="alert alert-warning"> 2초 이내 구매시 할인 </div> : null
+      }
+      <YellowBtn bg ="blue" onClick={() => { setCount(count + 1) }}>버튼</YellowBtn>
       
       <div className="row">
         <div className="col-md-6">
