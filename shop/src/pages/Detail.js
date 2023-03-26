@@ -17,16 +17,28 @@ class DetailPage2 extends Component {
 }
 
 function DetailPage (props) {
+  let [textVal, setTextVal] = useState("");
+  let [alertText, setAlertText] = useState(false);
+  
   useEffect(() => {
     // Mount/Update시 실행된다.
     setTimeout(() => {
       setAlertVisible(false);
     }, 2000)
-  })
 
-  setTimeout(() => { 
-    // code
-  }, 1000)
+    return () => {
+      // clean up function
+      // useEffect 내용보다 먼저 실행된다.
+      // mount시엔 삭제되지 않고, unmount시에는 실행된다.
+    }
+  }, [])
+
+  useEffect(() => {
+    if (Number.isNaN(Number(textVal)) === true)
+      setAlertText(true);
+    else
+      setAlertText(false);
+  }, [textVal]);
   
   let [count, setCount] = useState(0);
   let { id } = useParams();
@@ -38,11 +50,6 @@ function DetailPage (props) {
     background : ${ props => props.bg };
     color : black;
     padding : 10px
-  `;
-
-  let BlackBox = styled.div`
-    background : grey;
-    padding : 20px;
   `;
 
   if (shoes == null)
@@ -62,6 +69,10 @@ function DetailPage (props) {
           <img src={ shoes.photo } width="100%" />
         </div>
         <div className="col-md-6">
+          {
+            alertText === true ? <div className="alert alert-warning">그러지 마세요</div> : null
+          }
+          <input onChange={(e) => { setTextVal(e.target.value) }}></input>
           <h4 className="pt-5">{ shoes.title }</h4>
           <p>{ shoes.content }</p>
           <p>{ shoes.price } 원</p>

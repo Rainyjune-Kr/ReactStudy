@@ -45,7 +45,8 @@ function App() {
                     return (
                       <GoodsCol imgUrl={imgUrl}
                         goodsTitle={obj.title}
-                        goodsContent={obj.content} />
+                        goodsContent={obj.content}
+                        key={idx} />
                     )
                   })
                 }
