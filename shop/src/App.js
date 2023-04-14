@@ -13,10 +13,35 @@ import DetailPage from './pages/Detail';
 import NotFoundPage from './pages/404';
 import About from './pages/About';
 import { EventPage, EventOne, EventTwo } from './pages/Event';
+import axios from 'axios';
 
 function App() {
-  let [goods] = useState(data);
+  let [goods, setGoods] = useState(data);
   let navigate = useNavigate();
+
+  function InsertGoods(data)
+  {
+    let copy = [...goods];
+
+    let dataConvert = [];
+    data.forEach(eachData => {
+      let newObj = {
+        "id" : eachData.id,
+        "title" : eachData.title,
+        "content" : eachData.content,
+        "price" : eachData.price,
+        "imgUrl" : 'https://codingapple1.github.io/shop/shoes' + eachData.id + '.jpg'
+      };
+      dataConvert.push(newObj);
+    });
+
+    let newGoods = [...goods, ...dataConvert];
+    console.log('org goods');
+    console.log(goods);
+    console.log('new goods');
+    console.log(newGoods)
+    setGoods(newGoods);
+  }
 
   return (
     <div className="App">
@@ -52,6 +77,16 @@ function App() {
                 }
               </Row>
             </Container>
+            <button onClick={()=> {
+              axios.get('https://codingapple1.github.io/shop/data2.json')
+              .then((result) => { 
+                console.log(result.data);
+                InsertGoods(result.data);
+              })
+              .catch(() => {
+                console.log('result is not inquired')
+              })
+            }}>버튼 </button>
           </>
         } />
         <Route path='/detail/:id' element={ <DetailPage shoes= { goods }/> }
