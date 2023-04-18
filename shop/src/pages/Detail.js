@@ -1,6 +1,7 @@
 import { Component, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from 'styled-components';
+import { Nav } from 'react-bootstrap';
 
 class DetailPage2 extends Component {
   componentDidMount() {
@@ -43,6 +44,7 @@ function DetailPage (props) {
   let [count, setCount] = useState(0);
   let { id } = useParams();
   let [alertVisible, setAlertVisible] = useState(true);
+  let [currTab, setCurrTab] = useState(0);
   
   let shoes = props.shoes.find(x => x.id == id);
 
@@ -58,29 +60,68 @@ function DetailPage (props) {
     );
   else
     return(
-    <div className="container">
-      {
-        alertVisible === true ? <div className="alert alert-warning"> 2초 이내 구매시 할인 </div> : null
-      }
-      <YellowBtn bg ="blue" onClick={() => { setCount(count + 1) }}>버튼</YellowBtn>
-      
-      <div className="row">
-        <div className="col-md-6">
-          <img src={ shoes.photo } width="100%" />
+      <div className="container">
+        {
+          alertVisible === true ? <div className="alert alert-warning"> 2초 이내 구매시 할인 </div> : null
+        }
+        {/* <YellowBtn bg="blue" onClick={() => { setCount(count + 1) }}>버튼</YellowBtn> */}
+
+        <div className="row">
+          <div className="col-md-6">
+            <img src={shoes.photo} width="100%" />
+          </div>
+          <div className="col-md-6">
+            {
+              alertText === true ? <div className="alert alert-warning">그러지 마세요</div> : null
+            }
+            <input onChange={(e) => { setTextVal(e.target.value) }}></input>
+            <h4 className="pt-5">{shoes.title}</h4>
+            <p>{shoes.content}</p>
+            <p>{shoes.price} 원</p>
+            <button className="btn btn-danger">주문하기</button>
+          </div>
         </div>
-        <div className="col-md-6">
-          {
-            alertText === true ? <div className="alert alert-warning">그러지 마세요</div> : null
-          }
-          <input onChange={(e) => { setTextVal(e.target.value) }}></input>
-          <h4 className="pt-5">{ shoes.title }</h4>
-          <p>{ shoes.content }</p>
-          <p>{ shoes.price } 원</p>
-          <button className="btn btn-danger">주문하기</button>
-        </div>
-      </div>
-    </div> 
-  );
+        {/* defaultActiveKey : 기본으로 눌려 있을 NavItem */}
+        <Nav className="mt-5" variant="tabs" defaultActiveKey="link0">
+          <Nav.Item>
+            <Nav.Link eventKey="link0" onClick={ () => { setCurrTab(0) } }>Button0</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link1" onClick={ () => { setCurrTab(1) } }>Button1</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link2" onClick={ () => { setCurrTab(2) } }>Button2</Nav.Link>
+          </Nav.Item>
+        </Nav>
+        <TabContent tabIdx={currTab}></TabContent>
+        <TabContentSimple tabIdx= {currTab}/>
+        <TabContentSimple2 tabIdx={currTab}/>
+      </div> 
+    );
+}
+
+function TabContent(props) {
+  if (props.tabIdx === 0) {
+    return <div>내용0</div>
+  } else if (props.tabIdx === 1) {
+    return <div>내용1</div>
+  } else if (props.tabIdx === 2) {
+    return <div>내용2</div>
+  }
+}
+
+function TabContentSimple({tabIdx}) {
+  if (tabIdx === 0) {
+    return <div>내용0</div>
+  } else if (tabIdx === 1) {
+    return <div>내용1</div>
+  } else if (tabIdx === 2) {
+    return <div>내용2</div>
+  }
+}
+
+function TabContentSimple2({tabIdx}) {
+  return [<div>내용0</div>,<div>내용1</div>,<div>내용2</div>][tabIdx];
 }
 
 function NotFound() {
