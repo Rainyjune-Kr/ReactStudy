@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import imgSource from './bg.png';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
 import data from './data.js';
 import { useState } from 'react';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
@@ -18,6 +19,8 @@ import axios from 'axios';
 function App() {
   let [goods, setGoods] = useState(data);
   let navigate = useNavigate();
+  let [goodsInquireCnt, setGoodsInquireCnt] = useState(0);
+  let [showLoading, setShowLoading] = useState(false);
 
   function InsertGoods(data)
   {
@@ -36,10 +39,6 @@ function App() {
     });
 
     let newGoods = [...goods, ...dataConvert];
-    console.log('org goods');
-    console.log(goods);
-    console.log('new goods');
-    console.log(newGoods)
     setGoods(newGoods);
   }
 
@@ -71,22 +70,35 @@ function App() {
                       <GoodsCol imgUrl={imgUrl}
                         goodsTitle={obj.title}
                         goodsContent={obj.content}
+                        goodsPrice={obj.price}
                         key={idx} />
                     )
                   })
                 }
               </Row>
             </Container>
-            <button onClick={()=> {
-              axios.get('https://codingapple1.github.io/shop/data2.json')
-              .then((result) => { 
-                console.log(result.data);
-                InsertGoods(result.data);
-              })
-              .catch(() => {
-                console.log('result is not inquired')
-              })
-            }}>버튼 </button>
+            <Container>
+              <button onClick={(btn) => {
+                let dataUrl = 'https://codingapple1.github.io/shop/data' + (goodsInquireCnt + 2) + '.json'
+                if (goodsInquireCnt >= 2) {
+                  alert('더 이상 불러올 자료가 없습니다.')
+                }
+                else {
+                  setShowLoading(true);
+                  axios.get(dataUrl)
+                    .then((result) => {
+                      InsertGoods(result.data);
+                      setGoodsInquireCnt(goodsInquireCnt + 1);
+                    })
+                    .catch(() => {
+                      console.log('result is not inquired')
+                    })
+                  setShowLoading(false);
+                }
+
+              }} width='20px'>버튼</button>
+              { showLoading ? <Row><p>불러오는 중...</p></Row> : null }
+            </Container>
           </>
         } />
         <Route path='/detail/:id' element={ <DetailPage shoes= { goods }/> }
@@ -110,6 +122,7 @@ function GoodsCol (props) {
     <Col>
       <img src={ props.imgUrl } width="80%" />
       <h4>{ props.goodsTitle }</h4>
+      <p>{ props.goodsPrice }</p>
       <p>{ props.goodsContent }</p>
     </Col>
   );
