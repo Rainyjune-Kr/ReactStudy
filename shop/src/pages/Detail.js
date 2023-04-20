@@ -27,10 +27,16 @@ function DetailPage (props) {
       setAlertVisible(false);
     }, 2000)
 
+    setTimeout(() => {
+      setLoadEnd('end');
+    }, 100);
+
     return () => {
       // clean up function
       // useEffect 내용보다 먼저 실행된다.
       // mount시엔 삭제되지 않고, unmount시에는 실행된다.
+
+      setLoadEnd('');
     }
   }, [])
 
@@ -54,13 +60,15 @@ function DetailPage (props) {
     padding : 10px
   `;
 
+  let [loadEnd, setLoadEnd] = useState('');
+
   if (shoes == null)
     return(
       <NotFound/>
     );
   else
     return(
-      <div className="container">
+      <div className={`container start ${loadEnd}`}>
         {
           alertVisible === true ? <div className="alert alert-warning"> 2초 이내 구매시 할인 </div> : null
         }
@@ -93,8 +101,8 @@ function DetailPage (props) {
             <Nav.Link eventKey="link2" onClick={ () => { setCurrTab(2) } }>Button2</Nav.Link>
           </Nav.Item>
         </Nav>
-        <TabContent tabIdx={currTab}></TabContent>
-        <TabContentSimple tabIdx= {currTab}/>
+        {/* <TabContent tabIdx={currTab}></TabContent>
+        <TabContentSimple tabIdx= {currTab}/> */}
         <TabContentSimple2 tabIdx={currTab}/>
       </div> 
     );
@@ -121,7 +129,19 @@ function TabContentSimple({tabIdx}) {
 }
 
 function TabContentSimple2({tabIdx}) {
-  return [<div>내용0</div>,<div>내용1</div>,<div>내용2</div>][tabIdx];
+  let [fade, setFade] = useState('');
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFade('end')  
+    }, 10);
+    return ()=>{
+      setFade('')
+    }
+  }, [tabIdx])
+
+  return <div className={`start ${fade}`}>{[<div>내용0</div>,<div>내용1</div>,<div>내용2</div>][tabIdx]}
+  </div>
 }
 
 function NotFound() {
