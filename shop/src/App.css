@@ -44,11 +44,11 @@
   background-position: center;
 }
 
-.start {
+.fade-in-start {
   opacity: 0;
 }
 
-.end {
+.fade-in-end {
   opacity: 1;
   transition: opacity 0.5s;
 }

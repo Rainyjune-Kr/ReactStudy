@@ -6,21 +6,25 @@ import Navbar from 'react-bootstrap/Navbar';
 import imgSource from './bg.png';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
 import data from './data.js';
-import { useState } from 'react';
-import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
+import {createContext, useState} from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import DetailPage from './pages/Detail';
 import NotFoundPage from './pages/404';
 import About from './pages/About';
+import Cart from './pages/Cart';
 import { EventPage, EventOne, EventTwo } from './pages/Event';
 import axios from 'axios';
+
+// context는 state들을 보관함
+export let Context1 = createContext();
 
 function App() {
   let [goods, setGoods] = useState(data);
   let navigate = useNavigate();
   let [goodsInquireCnt, setGoodsInquireCnt] = useState(0);
   let [showLoading, setShowLoading] = useState(false);
+  let [inventory, setInventory] = useState([10, 11, 12])
 
   function InsertGoods(data)
   {
@@ -101,7 +105,9 @@ function App() {
             </Container>
           </>
         } />
-        <Route path='/detail/:id' element={ <DetailPage shoes= { goods }/> }
+        <Route path='/detail/:id' element={
+            <Context1.Provider value={{ inventory, goods }}><DetailPage shoes= { goods }/></Context1.Provider>
+        }
         />
         <Route path='/about' element={ <About/>}>
           <Route path='member' element={ <div>멤버</div> }/>
@@ -111,6 +117,7 @@ function App() {
           <Route path='one' element={ <EventOne/> }/>
           <Route path='two' element={ <EventTwo/> }/>
         </Route>
+        <Route path='/cart' element={ <Cart/>} />
         <Route path='*' element={ <NotFoundPage/> }/>
       </Routes>
     </div>

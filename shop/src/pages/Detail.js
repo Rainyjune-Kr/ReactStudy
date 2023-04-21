@@ -1,7 +1,8 @@
-import { Component, useEffect, useState } from "react";
+import {Component, useContext, useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import styled from 'styled-components';
 import { Nav } from 'react-bootstrap';
+import { Context1 } from './../App.js';
 
 class DetailPage2 extends Component {
   componentDidMount() {
@@ -20,6 +21,7 @@ class DetailPage2 extends Component {
 function DetailPage (props) {
   let [textVal, setTextVal] = useState("");
   let [alertText, setAlertText] = useState(false);
+
   
   useEffect(() => {
     // Mount/Update시 실행된다.
@@ -28,7 +30,7 @@ function DetailPage (props) {
     }, 2000)
 
     setTimeout(() => {
-      setLoadEnd('end');
+      setLoadEnd('fade-in-end');
     }, 100);
 
     return () => {
@@ -68,7 +70,7 @@ function DetailPage (props) {
     );
   else
     return(
-      <div className={`container start ${loadEnd}`}>
+      <div className={`container fade-in-start ${loadEnd}`}>
         {
           alertVisible === true ? <div className="alert alert-warning"> 2초 이내 구매시 할인 </div> : null
         }
@@ -103,7 +105,7 @@ function DetailPage (props) {
         </Nav>
         {/* <TabContent tabIdx={currTab}></TabContent>
         <TabContentSimple tabIdx= {currTab}/> */}
-        <TabContentSimple2 tabIdx={currTab}/>
+        <TabContentSimple2 tabIdx={currTab} shoes={shoes}/>
       </div> 
     );
 }
@@ -128,19 +130,20 @@ function TabContentSimple({tabIdx}) {
   }
 }
 
-function TabContentSimple2({tabIdx}) {
+function TabContentSimple2({tabIdx, shoes}) {
   let [fade, setFade] = useState('');
+  let { inventory } = useContext(Context1);
 
   useEffect(() => {
     setTimeout(() => {
-      setFade('end')  
+      setFade('fade-in-end')
     }, 10);
     return ()=>{
       setFade('')
     }
   }, [tabIdx])
 
-  return <div className={`start ${fade}`}>{[<div>내용0</div>,<div>내용1</div>,<div>내용2</div>][tabIdx]}
+  return <div className={`fade-in-start ${fade}`}>{[<div>{shoes.title}</div>,<div>{inventory}</div>,<div>내용2</div>][tabIdx]}
   </div>
 }
 
