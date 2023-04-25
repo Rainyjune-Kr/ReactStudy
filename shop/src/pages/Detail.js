@@ -1,8 +1,9 @@
 import {Component, useContext, useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
-import styled from 'styled-components';
 import { Nav } from 'react-bootstrap';
 import { Context1 } from './../App.js';
+import { useSelector, useDispatch } from "react-redux";
+import { addCart } from '../store/cartItemsSlice.js';
 
 class DetailPage2 extends Component {
   componentDidMount() {
@@ -48,21 +49,15 @@ function DetailPage (props) {
     else
       setAlertText(false);
   }, [textVal]);
-  
-  let [count, setCount] = useState(0);
   let { id } = useParams();
   let [alertVisible, setAlertVisible] = useState(true);
   let [currTab, setCurrTab] = useState(0);
   
   let shoes = props.shoes.find(x => x.id == id);
-
-  let YellowBtn = styled.button`
-    background : ${ props => props.bg };
-    color : black;
-    padding : 10px
-  `;
-
   let [loadEnd, setLoadEnd] = useState('');
+
+  let dispatch = useDispatch();
+  let states = useSelector((state) => state);
 
   if (shoes == null)
     return(
@@ -74,7 +69,6 @@ function DetailPage (props) {
         {
           alertVisible === true ? <div className="alert alert-warning"> 2초 이내 구매시 할인 </div> : null
         }
-        {/* <YellowBtn bg="blue" onClick={() => { setCount(count + 1) }}>버튼</YellowBtn> */}
 
         <div className="row">
           <div className="col-md-6">
@@ -88,7 +82,10 @@ function DetailPage (props) {
             <h4 className="pt-5">{shoes.title}</h4>
             <p>{shoes.content}</p>
             <p>{shoes.price} 원</p>
-            <button className="btn btn-danger">주문하기</button>
+            <button className="btn btn-danger" onClick={() => {
+              dispatch(addCart({id:shoes.id, name:shoes.content, count:1}))
+              console.log('cart Items : ' + states.cartItems);
+            }}>주문하기</button>
           </div>
         </div>
         {/* defaultActiveKey : 기본으로 눌려 있을 NavItem */}

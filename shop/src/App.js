@@ -52,9 +52,9 @@ function App() {
         <Container>
           <Navbar.Brand href='/'>Rainyjune Shop</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="/deals">핫딜</Nav.Link>
-            <Nav.Link href="/cart">장바구니</Nav.Link>
-            <Nav.Link href="/orders">구매내역</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/deals') }}>핫딜</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/cart') }}>장바구니</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/orders') }}>구매내역</Nav.Link>
             <Nav.Link onClick={() => { navigate('/about') }}>About</Nav.Link>
             <Nav.Link onClick={() => { navigate('/event') }}>Event</Nav.Link>
           </Nav>
@@ -75,6 +75,7 @@ function App() {
                         goodsTitle={obj.title}
                         goodsContent={obj.content}
                         goodsPrice={obj.price}
+                        goodsId = {obj.id}
                         key={idx} />
                     )
                   })
@@ -125,9 +126,10 @@ function App() {
 }
 
 function GoodsCol (props) {
+  console.log(props)
   return(
     <Col>
-      <img src={ props.imgUrl } width="80%" />
+      <a href={'/detail/' + props.goodsId }><img src={ props.imgUrl } width="80%" /></a>
       <h4>{ props.goodsTitle }</h4>
       <p>{ props.goodsPrice }</p>
       <p>{ props.goodsContent }</p>
