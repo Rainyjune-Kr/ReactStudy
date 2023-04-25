@@ -1,8 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  name: 'Bae Junbeom',
-  age: 33
+  name: 'UserName',
+  age: 21
 }
 
 export const user = createSlice({
@@ -10,12 +10,10 @@ export const user = createSlice({
   initialState,
   reducers: {
     setName(state, action) {
-      let newUserName = action.payload;
-      let currUser = state;
-      currUser.name = newUserName;
+      state.name = action.payload
     },
     increaseUserAge(state) {
-      state.age = state.age + 1;
+      state.age++
     }
   }
 })

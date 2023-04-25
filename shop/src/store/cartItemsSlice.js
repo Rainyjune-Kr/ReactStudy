@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 let cartItems = createSlice({
   name: 'cartItems',
@@ -8,28 +8,24 @@ let cartItems = createSlice({
   ],
   reducers: {
     increaseCount(state, action) {
-      let targetItemId = action.payload;
-      let targetItem = state.find(x => x.id === targetItemId);
+      let targetItem = state.find((x) => { return x.id === action.payload })
 
       if (targetItem != null) {
-        targetItem.count = targetItem.count + 1
-        return state
+        targetItem.count++
       }
     },
     decreaseCount(state, action) {
-      let targetItemId = action.payload;
-      let targetItem = state.find(x => x.id === targetItemId);
+      let targetItem = state.find((x) => { return x.id === action.payload })
 
-      if (targetItem !== null) {
-        if (targetItem.count !== 0) targetItem.count = targetItem.count - 1
-        return state
+      if (targetItem !== null && targetItem.count > 0) {
+        targetItem.count--
       }
     },
     addCart(state, action) {
       let existCheck = state.find((x) => { return x.id === action.payload.id })
       
       if (existCheck !== null && typeof existCheck !== 'undefined') {
-        existCheck.count++;
+        existCheck.count++
       }
       else {
         state.push(action.payload)
@@ -37,8 +33,7 @@ let cartItems = createSlice({
     },
     removeFromCart(state, action) {
       let existCheck = state.find((x) => { return x.id === action.payload })
-      console.log('id:' + action.payload)
-      console.log('find item:' + existCheck)
+
       if (existCheck !== null && typeof existCheck !== 'undefined') {
         let removeIdx = state.findIndex((x) => { return x.id === action.payload })
         state.splice(removeIdx, 1)
@@ -47,5 +42,5 @@ let cartItems = createSlice({
   }
 })
 
-export let { increaseCount, decreaseCount, addCart, removeFromCart } = cartItems.actions;
-export default cartItems;
+export let { increaseCount, decreaseCount, addCart, removeFromCart } = cartItems.actions
+export default cartItems
