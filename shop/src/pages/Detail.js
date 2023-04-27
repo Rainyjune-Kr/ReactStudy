@@ -22,7 +22,15 @@ class DetailPage2 extends Component {
 function DetailPage (props) {
   let [textVal, setTextVal] = useState("");
   let [alertText, setAlertText] = useState(false);
+  let { id } = useParams();
+  let [alertVisible, setAlertVisible] = useState(true);
+  let [currTab, setCurrTab] = useState(0);
+  
+  let shoes = props.shoes.find(x => x.id == id);
+  let [loadEnd, setLoadEnd] = useState('');
 
+  let dispatch = useDispatch();
+  let states = useSelector((state) => state);
   
   useEffect(() => {
     // Mount/Update시 실행된다.
@@ -34,6 +42,18 @@ function DetailPage (props) {
       setLoadEnd('fade-in-end');
     }, 100);
 
+    let watched = JSON.parse(localStorage.getItem('watched'))
+    
+    if (watched !== null && typeof watched !== 'undefined'
+        && shoes !== null && typeof shoes !== 'undefined') {
+          console.log(shoes)
+      let foundItem = watched.find((x) => { return x === id })
+      if (foundItem === null || typeof foundItem === 'undefined') {
+        watched.push(id)
+        localStorage.setItem('watched', JSON.stringify(watched))
+      }
+    }
+    
     return () => {
       // clean up function
       // useEffect 내용보다 먼저 실행된다.
@@ -49,15 +69,6 @@ function DetailPage (props) {
     else
       setAlertText(false);
   }, [textVal]);
-  let { id } = useParams();
-  let [alertVisible, setAlertVisible] = useState(true);
-  let [currTab, setCurrTab] = useState(0);
-  
-  let shoes = props.shoes.find(x => x.id == id);
-  let [loadEnd, setLoadEnd] = useState('');
-
-  let dispatch = useDispatch();
-  let states = useSelector((state) => state);
 
   if (shoes == null)
     return(
